@@ -3,6 +3,8 @@ package com.bank.account.controller;
 import com.bank.account.dto.AccountDetailsDto;
 import com.bank.account.entity.AccountDetailsEntity;
 import com.bank.account.service.AccountDetailsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/details")
+@Tag(name = "Контроллер для банковских реквизитов",
+        description = "Этот контроллер считывает, создает и обновляет данные банковских реквизитов")
 public class AccountDetailsController {
 
     private final AccountDetailsService service;
@@ -30,6 +34,7 @@ public class AccountDetailsController {
      * @param id технический идентификатор {@link AccountDetailsEntity}
      * @return {@link ResponseEntity<AccountDetailsDto>}
      */
+    @Operation(summary = "Получение банковских реквизитов по id")
     @GetMapping("/{id}")
     public AccountDetailsDto read(@PathVariable("id") Long id) {
         return service.findById(id);
@@ -39,6 +44,7 @@ public class AccountDetailsController {
      * @param accountDetails - сущность для создания в виде {@link AccountDetailsDto}
      * @return {@link ResponseEntity<AccountDetailsDto>}
      */
+    @Operation(summary = "Создание банковских реквизитов c использованием DTO")
     @PostMapping("/create")
     public ResponseEntity<AccountDetailsDto> create(@RequestBody AccountDetailsDto accountDetails) {
         return ResponseEntity.ok(service.save(accountDetails));
@@ -49,6 +55,7 @@ public class AccountDetailsController {
      * @param id             технический идентификатор {@link AccountDetailsEntity}
      * @return {@link ResponseEntity<AccountDetailsDto>}
      */
+    @Operation(summary = "Обновление банковских реквизитов по id")
     @PutMapping("/update/{id}")
     public ResponseEntity<AccountDetailsDto> update(@PathVariable Long id,
                                                     @RequestBody AccountDetailsDto accountDetails) {
@@ -59,6 +66,7 @@ public class AccountDetailsController {
      * @param ids лист технических идентификаторов {@link AccountDetailsEntity}
      * @return {@link ResponseEntity} c {@link List<AccountDetailsDto>}.
      */
+    @Operation(summary = "Чтение банковских реквизитов по ids")
     @GetMapping("read/all")
     public ResponseEntity<List<AccountDetailsDto>> readAll(@RequestParam List<Long> ids) {
         return ResponseEntity.ok(service.findAllById(ids));
